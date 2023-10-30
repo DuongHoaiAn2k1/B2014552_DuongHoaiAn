@@ -5,10 +5,10 @@
 <script>
 import categoryService from "@/services/category.service.js";
 import CategoryFrom from "@/components/CategoryForm.vue";
-import { defineComponent, ref, onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
-export default defineComponent({
+export default {
   components: {
     CategoryFrom,
   },
@@ -25,5 +25,5 @@ export default defineComponent({
     };
     return { submitAddCategory };
   },
-});
+};
 </script>

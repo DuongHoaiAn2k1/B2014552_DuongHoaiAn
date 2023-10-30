@@ -6,37 +6,39 @@ const ApiError = require("../api-error");
 exports.create = async (req, res, next) => {
   try {
     // Xác minh dữ liệu đầu vào sử dụng Joi
-    // const schema = Joi.object({
-    //   productName: Joi.string().max(255).required(),
-    //   productDes: Joi.string(),
-    //   categoryId: Joi.string().required(), // Bạn có thể kiểm tra dữ liệu đầu vào cho categoryId tương tự
-    //   price: Joi.number(),
-    //   trademark: Joi.string(),
-    //   origin: Joi.string(),
-    // });
+    const schema = Joi.object({
+      productName: Joi.string().max(255).required(),
+      productDes: Joi.string(),
+      categoryId: Joi.string().required(), // Bạn có thể kiểm tra dữ liệu đầu vào cho categoryId tương tự
+      price: Joi.number(),
+      trademark: Joi.string(),
+      origin: Joi.string(),
+    });
 
-    // const { error } = schema.validate(req.body);
+    const { error } = schema.validate(req.body);
 
-    // if (error) {
-    //   return res.status(400).json({
-    //     error: "Dữ liệu có lỗi! Vui lòng kiểm tra lại dữ liệu của bạn",
-    //   });
-    // }
+    if (error) {
+      return res.status(400).json({
+        error: "Dữ liệu có lỗi! Vui lòng kiểm tra lại dữ liệu của bạn",
+      });
+    }
     // Truy xuất thông tin về tệp đã tải lên và cập nhật trường productImg
-    const uploadedFiles = req.file ? [req.file.filename] : [];
+    const uploadedFiles = req.files
+      ? req.files.map((file) => file.filename)
+      : [];
     req.body.productImg = uploadedFiles;
 
     // // Tạo một sản phẩm mới từ dữ liệu đầu vào
-    // const newProduct = new Product(req.body);
+    const newProduct = new Product(req.body);
 
     // // Lưu sản phẩm mới vào cơ sở dữ liệu
-    // await newProduct.save();
+    await newProduct.save();
 
     // // Trả về thông báo thành công hoặc sản phẩm vừa được tạo
-    // res.json("Thêm sản phẩm thành công");
+    res.json("Thêm sản phẩm thành công");
 
-    res.json(req.body);
-    console.log("Dữ liệu từ client:", req.body);
+    // res.json(req.body);
+    // console.log("Dữ liệu từ client:", req.body);
   } catch (err) {
     return next(new APIError(500, "Đã có lỗi xảy ra khi tạo sản phẩm"));
   }

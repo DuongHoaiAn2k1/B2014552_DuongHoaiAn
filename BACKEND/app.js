@@ -8,7 +8,7 @@ const productRoute = require("./app/routes/product.route");
 const app = express();
 var cookieParser = require("cookie-parser");
 
-// app.use(cors());
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 app.use("/uploads", express.static("uploads"));

@@ -18,7 +18,8 @@ const upload = multer({ storage: storage });
 router
   .route("/")
   .get(product.findAll)
-  .post(upload.single("productImg"), product.create);
+  // .post(upload.single("productImg"), product.create);
+  .post(upload.array("productImg"), product.create);
 
 router
   .route("/:id")

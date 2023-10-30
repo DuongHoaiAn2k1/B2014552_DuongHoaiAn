@@ -8,11 +8,11 @@
 <script>
 import adminService from "@/services/admin.service.js";
 import SignInForm from "@/components/SignInForm.vue";
-import { defineComponent, ref } from "vue";
+import { ref } from "vue";
 import { useAuthStore } from "@/stores/auth.js";
 import { useRouter } from "vue-router";
 
-export default defineComponent({
+export default {
   components: {
     SignInForm,
   },
@@ -43,5 +43,5 @@ export default defineComponent({
     // return { store, message, submitSignIn }
     return { submitSignIn };
   },
-});
+};
 </script>

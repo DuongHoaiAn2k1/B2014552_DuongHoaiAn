@@ -36,7 +36,9 @@
                   <td>{{ product.productName }}</td>
                   <td>
                     <img
-                      :src="product.productImg"
+                      :src="
+                        'http://localhost:3000/uploads/' + product.productImg[0]
+                      "
                       alt="Hình ảnh"
                       width="50"
                       height="50"
@@ -48,8 +50,23 @@
                   <td>{{ product.origin }}</td>
                   <td>{{ product.soldOut ? "Hết hàng" : "Còn hàng" }}</td>
                   <td>
-                    <i class="fa-regular fa-pen-to-square"></i> |
-                    <i class="fa-solid fa-trash"></i>
+                    <router-link
+                      :to="{
+                        name: 'edit-product',
+                        params: { id: product._id },
+                      }"
+                      class="router-css-2"
+                      ><i class="fa-regular fa-pen-to-square"></i
+                    ></router-link>
+                    &ensp;|&ensp;
+                    <a
+                      href=""
+                      style="color: black"
+                      @click="
+                        confirmDeleteProduct(product._id, product.productName)
+                      "
+                      ><i class="fa-solid fa-trash"></i
+                    ></a>
                   </td>
                 </tr>
               </tbody>
@@ -91,12 +108,27 @@ export default {
       }
     };
 
+    const confirmDeleteProduct = async (productId, productName) => {
+      const shouldDelete = window.confirm(
+        `Bạn có chắc muốn xóa sản phẩm "${productName}" không?`
+      );
+
+      if (shouldDelete) {
+        try {
+          const response = await productService.delete(productId);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+
     onMounted(() => {
       fetchProducts();
     });
 
     return {
       products,
+      confirmDeleteProduct,
     };
   },
 };
@@ -106,5 +138,8 @@ export default {
 .router-css {
   text-decoration: none;
   color: #fff;
+}
+.router-css-2 {
+  color: black;
 }
 </style>

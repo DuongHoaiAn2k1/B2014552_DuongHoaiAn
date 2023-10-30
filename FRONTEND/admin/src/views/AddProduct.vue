@@ -1,17 +1,29 @@
 <template>
-  <ProductForm @submit:addproduct="submitAddproduct" />
+  <ProductForm
+    :categories="listCategory"
+    @submit:addproduct="submitAddproduct"
+  />
 </template>
 
 <script>
 import productService from "@/services/product.service.js";
+import categoryService from "@/services/category.service.js";
 import ProductForm from "@/components/ProductForm.vue";
 import { defineComponent, ref, onMounted } from "vue";
 
-export default defineComponent({
+export default {
   components: {
     ProductForm,
   },
   setup() {
+    const listCategory = ref([]); // Khởi tạo biến listCategory
+    onMounted(async () => {
+      try {
+        listCategory.value = await categoryService.findAll(); // Lấy dữ liệu khi component được mount
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    });
     const submitAddproduct = async (data) => {
       try {
         const formData = new FormData();
@@ -19,25 +31,23 @@ export default defineComponent({
         for (const key in data) {
           if (key !== "productImg") {
             formData.append(key, data[key]);
-          } else if (data.productImg && Array.isArray(data.productImg)) {
-            // Thêm mỗi hình ảnh vào formData
-            data.productImg.forEach((img) => {
-              formData.append("productImg", img);
-            });
+          } else if (data.productImg) {
+            formData.append("productImg", data.productImg[0]);
+            formData.append("productImg", data.productImg[1]);
           }
         }
-        for (let [key, value] of formData.entries()) {
-          console.log(`${key}:`, value);
-        }
-        console.log(data.productImg);
-        console.log(data);
+        // for (let [key, value] of formData.entries()) {
+        //   console.log(`${key}:`, value);
+        // }
         const response = await productService.create(formData);
+        console.log(data);
         console.log(response);
       } catch (error) {
         console.log(error);
       }
     };
-    return { submitAddproduct };
+
+    return { submitAddproduct, listCategory };
   },
-});
+};
 </script>

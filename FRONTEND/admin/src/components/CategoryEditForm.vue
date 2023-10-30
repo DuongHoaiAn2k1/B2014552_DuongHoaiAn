@@ -46,9 +46,9 @@
 </template>
 
 <script>
-import { ref, defineComponent, toRefs, computed } from "vue";
+import { ref, toRefs, computed } from "vue";
 
-export default defineComponent({
+export default {
   props: {
     currentCategory: Object,
   },
@@ -65,5 +65,5 @@ export default defineComponent({
       submitUpdateCategory,
     };
   },
-});
+};
 </script>

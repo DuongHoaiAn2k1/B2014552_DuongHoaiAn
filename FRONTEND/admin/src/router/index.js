@@ -53,6 +53,14 @@ const routes = [
         },
       },
       {
+        path: "/edit-product/:id",
+        name: "edit-product",
+        component: () => import("@/views/EditProduct.vue"),
+        meta: {
+          requiresAuth: true, // Yêu cầu đăng nhập để truy cập trang này
+        },
+      },
+      {
         path: "/category-list",
         name: "category-list",
         component: () => import("@/components/CategoryList.vue"),

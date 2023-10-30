@@ -13,9 +13,9 @@ import { defineComponent } from "vue";
 import AppHeader from "@/components/AppHeader.vue";
 import SideBar from "@/components/SideBar.vue";
 import router from "../router";
-export default defineComponent({
+export default {
   components: { router, AppHeader, SideBar },
-});
+};
 </script>
 
 <style>

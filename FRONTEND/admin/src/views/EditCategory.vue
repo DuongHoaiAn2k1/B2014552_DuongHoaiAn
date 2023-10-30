@@ -7,12 +7,12 @@
 </template>
 
 <script>
-import { ref, defineComponent, onMounted, computed } from "vue";
+import { ref, onMounted, computed } from "vue";
 import categoryService from "@/services/category.service.js";
 import CategoryEditForm from "@/components/CategoryEditForm.vue";
 import { useRoute, useRouter } from "vue-router";
 
-export default defineComponent({
+export default {
   components: {
     CategoryEditForm,
   },
@@ -42,5 +42,5 @@ export default defineComponent({
 
     return { currentCategory, updateCategory };
   },
-});
+};
 </script>

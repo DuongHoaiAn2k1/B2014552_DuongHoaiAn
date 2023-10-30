@@ -49,16 +49,38 @@
                   <label class="form-label" for="productCategory"
                     >Danh mục sản phẩm</label
                   >
+                  <!-- <select
+                    id="productCategory"
+                    v-model="productData.categoryId"
+                    class="form-select"
+                    name="categoryId"
+                  >
+                    <option
+                      v-for="category in categories"
+                      :key="category.id"
+                      :value="category.id"
+                    >
+                      {{ category.name }}
+                    </option>
+                  </select> -->
                   <select
                     id="productCategory"
                     v-model="productData.categoryId"
                     class="form-select"
                     name="categoryId"
                   >
-                    <option value="653a78533a03fc2b1f826df9">Nước hoa</option>
-                    <option value="category2">Danh mục 2</option>
-                    <!-- Add more options as needed -->
+                    <option disabled value="">
+                      Vui lòng chọn một danh mục
+                    </option>
+                    <option
+                      v-for="category in categories"
+                      :key="category._id"
+                      :value="category._id"
+                    >
+                      {{ category.categoryName }}
+                    </option>
                   </select>
+
                   <div class="text-danger">
                     {{ categoryIdError }}
                   </div>
@@ -76,6 +98,9 @@
                     class="form-control"
                     multiple
                   />
+                  <div class="text-danger">
+                    {{ productImgError }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -165,11 +190,22 @@ const schema = yup.object().shape({
   productName: yup.string().required("Tên sản phẩm không được để trống"),
   productDes: yup.string().required("Mô tả sản phẩm không được để trống"),
   categoryId: yup.string().required("Danh mục sản phẩm không được để trống"),
+  productImg: yup
+    .array()
+    .min(2, "Phải tải lên ít nhất 2 hình ảnh")
+    .max(2, "Chỉ được tải lên tối đa 2 hình ảnh")
+    .typeError("Hình ảnh sản phẩm không được để trống"),
   price: yup.number().typeError("Giá sản phẩm không được để trống").nullable(),
   trademark: yup.string().required("Thương hiệu không được để trống"),
   origin: yup.string().required("Xuất xứ không được để trống"),
 });
 export default {
+  props: {
+    categories: {
+      type: Array,
+      default: () => [],
+    },
+  },
   setup(props, context) {
     const productData = reactive({
       productName: "",
@@ -183,6 +219,7 @@ export default {
 
     const productNameError = ref("");
     const productDesError = ref("");
+    const productImgError = ref("");
     const categoryIdError = ref("");
     const priceError = ref("");
     const trademarkError = ref("");
@@ -191,16 +228,18 @@ export default {
       const imageFiles = event.target.files; // Lấy danh sách tệp hình ảnh đã chọn
 
       if (imageFiles && imageFiles.length > 0) {
-        productData.productImg = imageFiles;
+        productData.productImg = Array.from(imageFiles); // Chuyển đổi FileList thành mảng
       } else {
-        productData.productImg = null;
+        productData.productImg = [];
       }
     };
+
     const submitAddproduct = (event) => {
       event.preventDefault();
       productNameError.value = null;
       productDesError.value = null;
       categoryIdError.value = null;
+      productImgError.value = null;
       priceError.value = null;
       trademarkError.value = null;
       originError.value = null;
@@ -209,6 +248,7 @@ export default {
         .then(() => {
           productNameError.value = null;
           productDesError.value = null;
+          productImgError.value = null;
           categoryIdError.value = null;
           priceError.value = null;
           trademarkError.value = null;
@@ -225,6 +265,9 @@ export default {
             }
             if (error.path === "productDes") {
               productDesError.value = error.message;
+            }
+            if (error.path === "productImg") {
+              productImgError.value = error.message;
             }
             if (error.path === "categoryId") {
               categoryIdError.value = error.message;
@@ -246,10 +289,12 @@ export default {
       productData,
       productNameError,
       productDesError,
+      productImgError,
       categoryIdError,
       priceError,
       trademarkError,
       originError,
+
       submitAddproduct,
       handleImageUpload,
     };
