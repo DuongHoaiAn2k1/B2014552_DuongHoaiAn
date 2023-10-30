@@ -23,8 +23,8 @@ exports.create = async (req, res, next) => {
     //   });
     // }
     // Truy xuất thông tin về tệp đã tải lên và cập nhật trường productImg
-    // const uploadedFiles = req.file ? [req.file.filename] : [];
-    // req.body.productImg = uploadedFiles;
+    const uploadedFiles = req.file ? [req.file.filename] : [];
+    req.body.productImg = uploadedFiles;
 
     // // Tạo một sản phẩm mới từ dữ liệu đầu vào
     // const newProduct = new Product(req.body);
@@ -34,11 +34,7 @@ exports.create = async (req, res, next) => {
 
     // // Trả về thông báo thành công hoặc sản phẩm vừa được tạo
     // res.json("Thêm sản phẩm thành công");
-    if (req.file) {
-      console.log("File thông tin:", req.file);
-      // Bạn có thể lưu đường dẫn của file vào cơ sở dữ liệu
-      req.body.productImg = req.file.path;
-    }
+
     res.json(req.body);
     console.log("Dữ liệu từ client:", req.body);
   } catch (err) {

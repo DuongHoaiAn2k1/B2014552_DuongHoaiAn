@@ -74,6 +74,7 @@
                     name="productImg"
                     @change="handleImageUpload"
                     class="form-control"
+                    multiple
                   />
                 </div>
               </div>
