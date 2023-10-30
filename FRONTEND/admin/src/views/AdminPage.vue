@@ -1,0 +1,23 @@
+<template>
+  <AppHeader />
+  <div id="layoutSidenav">
+    <SideBar />
+    <router-view v-slot="{ Component }">
+      <component :is="Component"></component>
+    </router-view>
+  </div>
+</template>
+
+<script>
+import { defineComponent } from "vue";
+import AppHeader from "@/components/AppHeader.vue";
+import SideBar from "@/components/SideBar.vue";
+import router from "../router";
+export default defineComponent({
+  components: { router, AppHeader, SideBar },
+});
+</script>
+
+<style>
+@import "@/assets/style.css";
+</style>
