@@ -14,8 +14,8 @@ class ProductService {
     return (await this.api.get(`/${id}`)).data;
   }
 
-  async patch(id) {
-    return (await this.api.patch(`/${id}`)).data;
+  async update(id, data) {
+    return (await this.api.patch(`/${id}`, data)).data;
   }
   async delete(id) {
     return (await this.api.delete(`/${id}`)).data;

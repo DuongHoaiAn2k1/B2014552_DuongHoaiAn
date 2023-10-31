@@ -23,7 +23,9 @@
                     class="form-control"
                     name="productName"
                   />
-                  <div class="text-danger"></div>
+                  <div class="text-danger">
+                    {{ productNameError }}
+                  </div>
                 </div>
               </div>
               <div class="col">
@@ -38,7 +40,9 @@
                     class="form-control"
                     name="productDes"
                   />
-                  <div class="text-danger"></div>
+                  <div class="text-danger">
+                    {{ productDesError }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -50,6 +54,7 @@
                   >
 
                   <select
+                    :key="currentProduct.categoryId"
                     id="productCategory"
                     v-model="currentProduct.categoryId"
                     class="form-select"
@@ -64,11 +69,11 @@
                       :value="category._id"
                       :selected="category._id === currentProduct.categoryId"
                     >
-                      {{ category.name }}
+                      {{ category.categoryName }}
                     </option>
                   </select>
 
-                  <div class="text-danger"></div>
+                  <div class="text-danger">{{ categoryIdError }}</div>
                 </div>
               </div>
               <div class="col">
@@ -79,7 +84,7 @@
                   <input
                     type="file"
                     name="productImg"
-                    @change="handleImageUpload"
+                    @change="handleImageUpdate"
                     class="form-control"
                     multiple
                   />
@@ -113,7 +118,7 @@
                     class="form-control"
                     name="trademark"
                   />
-                  <div class="text-danger"></div>
+                  <div class="text-danger">{{ trademarkError }}</div>
                 </div>
               </div>
             </div>
@@ -128,13 +133,13 @@
                     class="form-control"
                     name="origin"
                   />
-                  <div class="text-danger"></div>
+                  <div class="text-danger">{{ originError }}</div>
                 </div>
               </div>
               <div class="col"></div>
             </div>
             <!-- Submit button -->
-            <button type="submit" class="btn btn-primary btn-block mb-4">
+            <button type="submit" class="btn btn-dark btn-block mb-4">
               Cập nhật
             </button>
           </form>
@@ -158,6 +163,16 @@
 
 <script>
 import { ref, toRefs, computed } from "vue";
+import * as yup from "yup";
+// Định nghĩa schema validation
+const schema = yup.object().shape({
+  productName: yup.string().required("Tên sản phẩm không được để trống"),
+  productDes: yup.string().required("Mô tả sản phẩm không được để trống"),
+  categoryId: yup.string().required("Danh mục sản phẩm không được để trống"),
+  price: yup.number().typeError("Giá sản phẩm không được để trống").nullable(),
+  trademark: yup.string().required("Thương hiệu không được để trống"),
+  origin: yup.string().required("Xuất xứ không được để trống"),
+});
 
 export default {
   props: {
@@ -169,15 +184,67 @@ export default {
   },
 
   setup(props, { emit }) {
+    // console.log("Current Product: ", currentProduct);
     const { currentProduct } = toRefs(props);
+    const productNameError = ref("");
+    const productDesError = ref("");
+    const categoryIdError = ref("");
+    const priceError = ref("");
+    const trademarkError = ref("");
+    const originError = ref("");
+    const handleImageUpdate = (event) => {
+      const imageFiles = event.target.files; // Lấy danh sách tệp hình ảnh đã chọn
 
+      if (imageFiles && imageFiles.length > 0) {
+        currentProduct.productImg = Array.from(imageFiles); // Chuyển đổi FileList thành mảng
+      } else {
+      }
+    };
     const submitUpdateProduct = (event) => {
       event.preventDefault();
-      emit("updateProduct", currentProduct.value);
+      productNameError.value = null;
+      productDesError.value = null;
+      categoryIdError.value = null;
+      priceError.value = null;
+      trademarkError.value = null;
+      originError.value = null;
+
+      schema
+        .validate(currentProduct.value, { abortEarly: false })
+        .then(() => {
+          // Nếu không có lỗi, emit sự kiện updateProduct
+          console.log("Super: ", currentProduct);
+          emit("updateProduct", currentProduct.value);
+        })
+        .catch((errors) => {
+          // Xử lý các lỗi validation
+          errors.inner.forEach((error) => {
+            if (error.path === "productName")
+              productNameError.value = error.message;
+            if (error.path === "productDes")
+              productDesError.value = error.message;
+            if (error.path === "categoryId")
+              categoryIdError.value = error.message;
+            if (error.path === "price") priceError.value = error.message;
+            if (error.path === "trademark")
+              trademarkError.value = error.message;
+            if (error.path === "origin") originError.value = error.message;
+          });
+        });
+
+      // console.log(currentProduct);
+      // emit("updateProduct", currentProduct.value);
     };
 
     return {
       currentProduct,
+      productNameError,
+      productDesError,
+      categoryIdError,
+      priceError,
+      trademarkError,
+      originError,
+      handleImageUpdate,
       submitUpdateProduct,
     };
   },

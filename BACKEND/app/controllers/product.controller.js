@@ -57,11 +57,10 @@ exports.findAll = async (req, res, next) => {
 
 exports.update = async (req, res, next) => {
   try {
-    const productId = req.params.id; // Lấy ID sản phẩm từ tham số đường dẫn
+    const productId = req.body._id; // Lấy ID sản phẩm từ tham số đường dẫn
 
     // Kiểm tra xem có tồn tại sản phẩm với ID đã cung cấp không
     const existingProduct = await Product.findById(productId);
-
     if (!existingProduct) {
       return res.status(404).json({
         error: "Sản phẩm không tồn tại",
@@ -69,38 +68,48 @@ exports.update = async (req, res, next) => {
     }
 
     // Xác minh dữ liệu đầu vào sử dụng Joi
-    const schema = Joi.object({
-      productName: Joi.string().max(255),
-      productDes: Joi.string(),
-      categoryId: Joi.string(), // Kiểm tra dữ liệu đầu vào cho categoryId tương tự
-      productImg: Joi.string().max(255),
-      soldOut: Joi.boolean(),
-    });
+    // const schema = Joi.object({
+    //   productName: Joi.string().max(255).required(),
+    //   productDes: Joi.string(),
+    //   categoryId: Joi.string().required(),
+    //   price: Joi.number(),
+    //   trademark: Joi.string(),
+    //   origin: Joi.string(),
+    //   // Bạn có thể thêm hoặc bỏ bớt các trường tùy thuộc vào yêu cầu
+    // });
 
-    const { error } = schema.validate(req.body);
+    // const { error } = schema.validate(req.body);
 
-    if (error) {
-      return res.status(400).json({
-        error: "Dữ liệu có lỗi! Vui lòng kiểm tra lại dữ liệu của bạn",
-      });
-    }
+    // if (error) {
+    //   return res.status(400).json({
+    //     error: "Dữ liệu có lỗi! Vui lòng kiểm tra lại dữ liệu của bạn",
+    //   });
+    // }
 
-    // Cập nhật các trường dữ liệu của sản phẩm nếu có dữ liệu hợp lệ
-    if (req.body.productName) {
-      existingProduct.productName = req.body.productName;
-    }
-    if (req.body.productDes) {
-      existingProduct.productDes = req.body.productDes;
-    }
-    if (req.body.categoryId) {
-      existingProduct.categoryId = req.body.categoryId; // Tương tự cho các trường khác
+    // Cập nhật các trường dữ liệu của sản phẩm
+    existingProduct.productName =
+      req.body.productName || existingProduct.productName;
+    existingProduct.productDes =
+      req.body.productDes || existingProduct.productDes;
+    existingProduct.categoryId =
+      req.body.categoryId || existingProduct.categoryId;
+    existingProduct.price = req.body.price || existingProduct.price;
+    existingProduct.trademark = req.body.trademark || existingProduct.trademark;
+    existingProduct.origin = req.body.origin || existingProduct.origin;
+    // Xử lý tệp đã tải lên nếu có
+    if (req.files && req.files.length > 0) {
+      existingProduct.productImg = req.files.map((file) => file.filename);
     }
 
     // Lưu sản phẩm đã cập nhật
     await existingProduct.save();
 
-    // Trả về sản phẩm đã cập nhật hoặc một thông báo thành công
-    res.json(existingProduct);
+    // Trả về thông báo thành công và sản phẩm vừa được cập nhật
+    res.json({
+      message: "Cập nhật sản phẩm thành công",
+      product: existingProduct,
+    });
+    console.log(req.body);
   } catch (err) {
     return next(new APIError(500, "Đã có lỗi xảy ra khi cập nhật sản phẩm"));
   }

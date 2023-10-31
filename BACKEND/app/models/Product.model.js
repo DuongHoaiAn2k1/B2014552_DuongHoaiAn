@@ -5,7 +5,7 @@ const productSchema = new Schema(
   {
     productName: { type: String, maxLength: 255 },
     productDes: { type: String },
-    categoryId: { type: Schema.Types.ObjectId, ref: "Category" },
+    categoryId: { type: String },
     price: { type: Number },
     trademark: { type: String },
     origin: { type: String },

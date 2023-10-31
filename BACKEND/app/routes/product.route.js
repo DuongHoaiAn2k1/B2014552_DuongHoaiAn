@@ -24,7 +24,7 @@ router
 router
   .route("/:id")
   .get(product.findOne)
-  .patch(product.update)
+  .patch(upload.array("productImg"), product.update)
   .delete(product.delete);
 
 module.exports = router;

@@ -37,10 +37,12 @@ export default {
     const submitUpdateProduct = async (data) => {
       try {
         const productId = computed(() => route.params.id);
-        const response = await productService.update();
+        console.log("My product needed update: ", data);
+        // const response = await productService.update(productId, data);
         alert("Cập nhật sản phẩm thành công");
-      } catch (error) {}
-      // Update logic
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     return { submitUpdateProduct, listCategory, currentProduct }; // Add productToEdit
