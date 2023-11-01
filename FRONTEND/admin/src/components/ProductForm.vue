@@ -157,7 +157,7 @@
               <div class="col"></div>
             </div>
             <!-- Submit button -->
-            <button type="submit" class="btn btn-primary btn-block mb-4">
+            <button type="submit" class="btn btn-dark btn-block mb-4">
               Thêm
             </button>
           </form>

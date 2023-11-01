@@ -196,7 +196,8 @@ export default {
       const imageFiles = event.target.files; // Lấy danh sách tệp hình ảnh đã chọn
 
       if (imageFiles && imageFiles.length > 0) {
-        currentProduct.productImg = Array.from(imageFiles); // Chuyển đổi FileList thành mảng
+        currentProduct._object.currentProduct.productImg =
+          Array.from(imageFiles); // Chuyển đổi FileList thành mảng
       } else {
       }
     };
@@ -213,7 +214,7 @@ export default {
         .validate(currentProduct.value, { abortEarly: false })
         .then(() => {
           // Nếu không có lỗi, emit sự kiện updateProduct
-          console.log("Super: ", currentProduct);
+          console.log("Super: ", currentProduct._object.currentProduct);
           emit("updateProduct", currentProduct.value);
         })
         .catch((errors) => {

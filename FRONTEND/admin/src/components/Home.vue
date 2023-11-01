@@ -48,7 +48,7 @@
                   <td>{{ product.productDes }}</td>
                   <td>{{ product.trademark }}</td>
                   <td>{{ product.origin }}</td>
-                  <td>{{ product.soldOut ? "Hết hàng" : "Còn hàng" }}</td>
+                  <td>{{ product.soldOut ? "Hết" : "Còn" }}</td>
                   <td>
                     <router-link
                       :to="{

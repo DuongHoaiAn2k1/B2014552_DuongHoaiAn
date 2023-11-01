@@ -36,9 +36,22 @@ export default {
 
     const submitUpdateProduct = async (data) => {
       try {
+        const formData = new FormData();
+        for (const key in data) {
+          if (key !== "productImg") {
+            formData.append(key, data[key]);
+          } else if (data.productImg) {
+            formData.append("productImg", data.productImg[0]);
+            formData.append("productImg", data.productImg[1]);
+          }
+        }
+
+        // for (let [key, value] of formData.entries()) {
+        //   console.log(`${key}:`, value);
+        // }
         const productId = computed(() => route.params.id);
-        console.log("My product needed update: ", data);
-        // const response = await productService.update(productId, data);
+        // console.log("My product needed update: ", formData);
+        const response = await productService.update(productId, formData);
         alert("Cập nhật sản phẩm thành công");
       } catch (error) {
         console.log(error);

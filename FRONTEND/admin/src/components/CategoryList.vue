@@ -6,7 +6,7 @@
         <ol class="breadcrumb mb-4">
           <button type="button" class="btn btn-dark">
             <router-link :to="{ name: 'add-category' }" class="router-css">
-              Thêm</router-link
+              Thêm (+)</router-link
             >
           </button>
         </ol>

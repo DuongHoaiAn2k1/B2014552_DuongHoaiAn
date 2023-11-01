@@ -6,6 +6,14 @@ const commonConfig = {
   },
 };
 
+function sendFormData(url, formData) {
+  return axios.post(url, formData, {
+    headers: {
+      // Chỉ thiết lập Accept, không thiết lập Content-Type
+      Accept: "application/json",
+    },
+  });
+}
 export default (baseURL) => {
   return axios.create({
     baseURL,
