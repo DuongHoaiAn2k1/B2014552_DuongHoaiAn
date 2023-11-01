@@ -85,4 +85,18 @@
   </div>
 </template>
 
-<style></style>
+<style>
+/* Điện thoại di động nhỏ (small phones) */
+@media only screen and (max-width: 599px) {
+  .carousel-inner {
+    display: none;
+  }
+}
+
+/* Điện thoại di động lớn đến máy tính bảng nhỏ (large phones to small tablets) */
+@media only screen and (min-width: 600px) and (max-width: 767px) {
+  .carousel-inner {
+    display: none;
+  }
+}
+</style>

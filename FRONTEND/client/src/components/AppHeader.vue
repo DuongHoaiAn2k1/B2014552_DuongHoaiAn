@@ -5,58 +5,19 @@
       <!-- Container wrapper -->
       <div class="container-fluid">
         <!-- Toggle button -->
+
         <button
           class="navbar-toggler"
           type="button"
-          data-mdb-toggle="collapse"
-          data-mdb-target="#navbarSupportedContent"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
           aria-controls="navbarSupportedContent"
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
           <i class="fas fa-bars"></i>
         </button>
-
-        <!-- Collapsible wrapper -->
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <!-- Navbar brand -->
-          <a class="navbar-brand mt-2 mt-lg-0" href="#">
-            <img
-              src="https://t4.ftcdn.net/jpg/03/28/11/35/360_F_328113542_31B2IVU37qZ09cXXA6iMSXs62Optrwok.jpg"
-              height="80"
-              alt="MDB Logo"
-              loading="lazy"
-            />
-          </a>
-          <!-- Left links -->
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <router-link :to="{ name: 'home' }" class="router-css">
-              <li class="nav-item">
-                <a class="nav-link" href="#">Trang chủ</a>
-              </li>
-            </router-link>
-            <router-link :to="{ name: 'product' }" class="router-css">
-              <li class="nav-item">
-                <a class="nav-link" href="#">Sản phẩm</a>
-              </li>
-            </router-link>
-            <router-link :to="{ name: 'introduce' }" class="router-css">
-              <li class="nav-item">
-                <a class="nav-link" href="#">Giới thiệu</a>
-              </li>
-            </router-link>
-            <router-link :to="{ name: 'contact' }" class="router-css">
-              <li class="nav-item">
-                <a class="nav-link" href="#">Liên hệ</a>
-              </li>
-            </router-link>
-          </ul>
-          <!-- Left links -->
-        </div>
-        <!-- Collapsible wrapper -->
-
-        <!-- Right elements -->
-        <div class="d-flex align-items-center">
+        <div id="contain-form" class="d-flex align-items-center">
           <form class="d-flex input-group w-auto me-2">
             <input
               type="search"
@@ -103,45 +64,49 @@
               <li><a class="dropdown-item" href="#">Something else here</a></li> -->
             </ul>
           </div>
-          <!-- Avatar -->
-          <!-- <div class="dropdown">
-            <a
-              class="dropdown-toggle d-flex align-items-center hidden-arrow"
-              href="#"
-              id="navbarDropdownMenuAvatar"
-              role="button"
-              data-mdb-toggle="dropdown"
-              aria-expanded="false"
-            >
-              <img
-                src="https://t3.ftcdn.net/jpg/05/53/79/60/360_F_553796090_XHrE6R9jwmBJUMo9HKl41hyHJ5gqt9oz.jpg"
-                class="rounded-circle"
-                height="25"
-                alt="Black and White Portrait of a Man"
-                loading="lazy"
-              />
-            </a>
-            <ul
-              class="dropdown-menu dropdown-menu-end"
-              aria-labelledby="navbarDropdownMenuAvatar"
-            >
-              <router-link
-                :to="{ name: 'signin' }"
-                class="router-css router-li"
-              >
-                <li>
-                  <a class="dropdown-item" href="#">Đăng nhập</a>
-                </li>
-              </router-link>
-
-              
-            </ul>
-          </div> -->
         </div>
-        <!-- Right elements -->
+        <!-- Collapsible wrapper -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <!-- Navbar brand -->
+          <a class="navbar-brand mt-2 mt-lg-0 d-none d-md-block" href="#">
+            <img
+              src="https://t4.ftcdn.net/jpg/03/28/11/35/360_F_328113542_31B2IVU37qZ09cXXA6iMSXs62Optrwok.jpg"
+              height="80"
+              alt="MDB Logo"
+              loading="lazy"
+            />
+          </a>
+          <!-- Left links -->
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <router-link :to="{ name: 'home' }" class="router-css">
+              <li class="nav-item">
+                <a class="nav-link" href="#">Trang chủ</a>
+              </li>
+            </router-link>
+            <router-link :to="{ name: 'product' }" class="router-css">
+              <li class="nav-item">
+                <a class="nav-link" href="#">Sản phẩm</a>
+              </li>
+            </router-link>
+            <router-link :to="{ name: 'introduce' }" class="router-css">
+              <li class="nav-item">
+                <a class="nav-link" href="#">Giới thiệu</a>
+              </li>
+            </router-link>
+            <router-link :to="{ name: 'contact' }" class="router-css">
+              <li class="nav-item">
+                <a class="nav-link" href="#">Liên hệ</a>
+              </li>
+            </router-link>
+          </ul>
+          <!-- Left links -->
+        </div>
+        <!-- Collapsible wrapper -->
       </div>
+
       <!-- Container wrapper -->
     </nav>
+
     <!-- Navbar -->
   </div>
 </template>
@@ -172,6 +137,9 @@ export default defineComponent({
 </script>
 
 <style>
+body {
+  margin: 0 0 !important;
+}
 .router-css {
   text-decoration: none;
 }
@@ -179,6 +147,11 @@ export default defineComponent({
 .header {
   height: 80px;
   background-color: #fff;
+  position: -webkit-sticky; /* Dành cho trình duyệt Safari */
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .header .navbar {
@@ -198,7 +171,22 @@ export default defineComponent({
   border: none;
   padding: 4px;
 }
+.d-flex.align-items-center {
+  order: 2; /* Thay đổi thứ tự cho máy tính */
+}
 
-@media screen and (min-width: 1024px) {
+.collapse.navbar-collapse {
+  order: 1; /* Thay đổi thứ tự cho máy tính */
+}
+
+@media only screen and (max-width: 599px) {
+  .d-none d-md-block {
+    display: none;
+  }
+}
+
+/* Điện thoại di động lớn đến máy tính bảng nhỏ (large phones to small tablets) */
+@media only screen and (min-width: 600px) and (max-width: 767px) {
+  /* CSS cho điện thoại di động lớn đến máy tính bảng nhỏ ở đây */
 }
 </style>
