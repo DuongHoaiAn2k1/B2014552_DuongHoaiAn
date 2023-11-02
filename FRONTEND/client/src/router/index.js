@@ -41,7 +41,12 @@ const routes = [
       {
         path: "/product",
         name: "product",
-        component: () => import("@/views/Product.vue"),
+        component: () => import("@/views/ProductPage.vue"),
+      },
+      {
+        path: "/profile",
+        name: "profile",
+        component: () => import("@/views/ProfilePage.vue"),
       },
       {
         path: "/product/:id",
@@ -49,16 +54,11 @@ const routes = [
         component: () => import("@/views/ProductDetail.vue"),
         props: true,
       },
-      // {
-      //   path: "/cart",
-      //   name: "cart",
-      //   component: () => import("@/views/Cart.vue"),
-      //   beforeEnter: (to, from, next) => {
-      //     const store = useStore();
-      //     if (store.isAuthenticated) next();
-      //     else next({ name: "signin" });
-      //   },
-      // },
+      {
+        path: "/cart",
+        name: "cart",
+        component: () => import("@/views/CartPage.vue"),
+      },
       {
         path: "/introduce",
         name: "introduce",

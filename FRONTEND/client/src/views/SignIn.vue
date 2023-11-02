@@ -9,10 +9,9 @@
 <script>
 import customerService from "@/services/customer.service";
 import SignInForm from "@/components/SignInForm.vue";
-import { defineComponent, ref } from "vue";
 import { useAuthStore } from "../stores/auth";
 import { useRouter } from "vue-router";
-export default defineComponent({
+export default {
   components: {
     SignInForm,
   },
@@ -26,8 +25,9 @@ export default defineComponent({
         const response = await customerService.signIn(data);
         console.log(response);
         if (response && response.token) {
-          authStore.login(response.token);
+          authStore.login(response.token, response.userId);
         }
+
         alert("Đăng nhập thành công");
         router.push({ name: "home" });
       } catch (error) {
@@ -38,5 +38,5 @@ export default defineComponent({
     //   //   return { store, message, submitSignIn };
     return { submitSignIn };
   },
-});
+};
 </script>

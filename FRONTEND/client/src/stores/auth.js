@@ -1,6 +1,5 @@
 // stores/auth.js
 import { defineStore } from "pinia";
-
 export const useAuthStore = defineStore({
   id: "auth",
   state: () => ({
@@ -8,14 +7,16 @@ export const useAuthStore = defineStore({
       localStorage.getItem("isUserLoggedIn") || "false"
     ),
     token: localStorage.getItem("token") || null, // Thêm trạng thái token
+    userId: localStorage.getItem("userId") || null,
   }),
   actions: {
-    login(token) {
+    login(token, userId) {
       // Thực hiện đăng nhập admin và đặt isUserLoggedIn thành true
       this.isUserLoggedIn = true;
       this.token = token; // Lưu token vào trạng thái
       localStorage.setItem("isUserLoggedIn", true);
       localStorage.setItem("token", token); // Lưu token vào localStorage
+      localStorage.setItem("userId", userId);
     },
     logout() {
       // Thực hiện đăng xuất admin và đặt isUserLoggedIn thành false
@@ -23,6 +24,7 @@ export const useAuthStore = defineStore({
       this.token = null; // Xóa token khỏi trạng thái
       localStorage.setItem("isUserLoggedIn", false);
       localStorage.removeItem("token"); // Xóa token khỏi localStorage
+      localStorage.removeItem("token");
     },
   },
 });

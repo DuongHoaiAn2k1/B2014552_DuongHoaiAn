@@ -32,7 +32,16 @@
           </form>
           <!-- Icon -->
           <a class="text-reset me-3" href="#">
-            <i class="fas fa-shopping-cart"></i>
+            <router-link
+              v-show="isLoggedIn"
+              :to="{
+                name: 'cart',
+              }"
+              class="router-css router-li"
+            >
+              <i class="fas fa-shopping-cart"></i>
+            </router-link>
+
             <span class="badge rounded-pill badge-notification bg-danger"
               >1</span
             >
@@ -53,6 +62,18 @@
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
               <router-link
+                v-show="isLoggedIn"
+                :to="{
+                  name: 'profile',
+                }"
+                class="router-css router-li"
+              >
+                <li>
+                  <a class="dropdown-item" href="#">Tài khoản</a>
+                </li>
+              </router-link>
+              <router-link
+                v-show="!isLoggedIn"
                 :to="{ name: 'signin' }"
                 class="router-css router-li"
               >
@@ -112,28 +133,21 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { ref, onMounted, watchEffect, computed } from "vue";
 import { useRouter } from "vue-router";
-export default defineComponent({
-  // setup() {
-  //   const store = useStore();
-  //   const router = useRouter();
-  //   const signOut = async () => {
-  //     try {
-  //       const headers = {
-  //         Authorization: `Bearer ${localStorage.getItem("token")}`,
-  //       };
-  //       await adminService.signOut({ headers });
-  //       localStorage.removeItem("token");
-  //       store.setIsAuthenticated(false);
-  //       router.push({ name: "home" });
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
-  //   return { store, signOut };
-  // },
-});
+import { useAuthStore } from "@/stores/auth.js";
+export default {
+  setup() {
+    const authStore = useAuthStore();
+    const isLoggedIn = computed(() => authStore.isUserLoggedIn);
+    const userId = computed(() => authStore.userId);
+
+    return {
+      isLoggedIn,
+      userId,
+    };
+  },
+};
 </script>
 
 <style>

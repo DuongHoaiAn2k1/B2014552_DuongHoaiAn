@@ -19,6 +19,9 @@ class CustomerService {
   async get(id) {
     return (await this.api.get(`/${id}`)).data;
   }
+  async update(id, data) {
+    return (await this.api.patch(`/${id}`, data)).data;
+  }
 }
 
 export default new CustomerService();

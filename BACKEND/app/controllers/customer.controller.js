@@ -90,9 +90,11 @@ exports.signIn = async (req, res, next) => {
       expiresIn: "24h",
     });
 
-    return res
-      .status(200)
-      .json({ message: "Đăng nhập thành công", token: token });
+    return res.status(200).json({
+      message: "Đăng nhập thành công",
+      token: token,
+      userId: user._id,
+    });
   } catch (error) {
     return next(new APIError(500, "Đã có lỗi xãy ra khi đăng nhập"));
   }
@@ -134,8 +136,7 @@ exports.updateProfile = async (req, res, next) => {
       name: Joi.string().max(255),
       phone: Joi.string().max(20),
       address: Joi.string().max(200),
-      email: Joi.string().email().max(100),
-      // Bạn có thể thêm các trường khác cần cập nhật tại đây
+      email: Joi.string().max(100),
     });
 
     // Validate dữ liệu đầu vào với schema
@@ -156,6 +157,8 @@ exports.updateProfile = async (req, res, next) => {
     }
 
     res.status(200).json("Cập nhật thông tin người dùng thành công");
+    // console.log(req.body);
+    // console.log(userId);
   } catch (err) {
     console.error(err);
     return next(new APIError(500, "Đã có lỗi xảy ra khi cập nhật hồ sơ"));
