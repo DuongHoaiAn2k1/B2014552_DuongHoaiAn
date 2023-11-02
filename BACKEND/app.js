@@ -5,6 +5,8 @@ const customerRoute = require("./app/routes/customer.route");
 const adminRoute = require("./app/routes/admin.route");
 const categoryRoute = require("./app/routes/category.route");
 const productRoute = require("./app/routes/product.route");
+const billRoute = require("./app/routes/bill.route");
+const billDetailRoute = require("./app/routes/billdetail.route");
 const app = express();
 var cookieParser = require("cookie-parser");
 
@@ -17,6 +19,8 @@ app.use("/api/customers", customerRoute);
 app.use("/api/admin", adminRoute);
 app.use("/api/category", categoryRoute);
 app.use("/api/product", productRoute);
+app.use("/api/bill", billRoute);
+app.use("/api/billDetail", billDetailRoute);
 // Error////////////////////////////////////////////
 app.use((req, res, next) => {
   return next(new ApiError(404, "Resoure not found"));
