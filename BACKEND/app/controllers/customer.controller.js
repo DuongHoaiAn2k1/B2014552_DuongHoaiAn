@@ -2,10 +2,8 @@ const Customer = require("../models/Customer.model");
 const APIError = require("../api-error");
 const Joi = require("joi");
 const bcrypt = require("bcryptjs");
-var jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const jwtSecret = "mysecretkey";
-var cookieParser = require("cookie-parser");
-const { query } = require("express");
 exports.signUp = async (req, res, next) => {
   try {
     // Định nghĩa schema validation cho dữ liệu đầu vào
@@ -92,11 +90,9 @@ exports.signIn = async (req, res, next) => {
       expiresIn: "24h",
     });
 
-    // Thiết lập cookie trước
-    res.cookie("tokenCookie", token);
-    res.cookie("userId", user._id);
-
-    res.status(200).json({ message: "Đăng nhập thành công", token });
+    return res
+      .status(200)
+      .json({ message: "Đăng nhập thành công", token: token });
   } catch (error) {
     return next(new APIError(500, "Đã có lỗi xãy ra khi đăng nhập"));
   }
@@ -113,11 +109,70 @@ exports.signOut = (req, res, next) => {
 
 exports.getProfile = async (req, res, next) => {
   try {
-    const userId = req.cookies["userId"];
+    const userId = req.params.id;
     // res.json(userId);
     const user = await Customer.findById(userId);
-    res.status(200).json(user);
+
+    if (!user) {
+      return res.status(404).json({
+        error: "Người dùng không tồn tại",
+      });
+    }
+    res.json(user);
   } catch (error) {
     return next(new APIError(500, "Lỗi lấy dữ liệu người dùng"));
+  }
+};
+
+exports.updateProfile = async (req, res, next) => {
+  try {
+    // Lấy ID người dùng từ cookie
+    const userId = req.params.id;
+
+    // Định nghĩa schema validation cho dữ liệu đầu vào
+    const schema = Joi.object({
+      name: Joi.string().max(255),
+      phone: Joi.string().max(20),
+      address: Joi.string().max(200),
+      email: Joi.string().email().max(100),
+      // Bạn có thể thêm các trường khác cần cập nhật tại đây
+    });
+
+    // Validate dữ liệu đầu vào với schema
+    const { error } = schema.validate(req.body);
+
+    if (error) {
+      return res.status(400).json({
+        error: "Dữ liệu có lỗi! Vui lòng kiểm tra lại dữ liệu của bạn!",
+      });
+    }
+
+    const updatedUser = await Customer.findByIdAndUpdate(userId, req.body, {
+      new: true,
+    });
+
+    if (!updatedUser) {
+      return res.status(404).json({ error: "Không tìm thấy người dùng." });
+    }
+
+    res.status(200).json("Cập nhật thông tin người dùng thành công");
+  } catch (err) {
+    console.error(err);
+    return next(new APIError(500, "Đã có lỗi xảy ra khi cập nhật hồ sơ"));
+  }
+};
+
+exports.findAll = async (req, res, next) => {
+  try {
+    // Lấy danh sách tất cả khách hàng từ cơ sở dữ liệu
+    const customers = await Customer.find();
+
+    // Trả về danh sách khách hàng
+    res.status(200).json(customers);
+  } catch (err) {
+    console.error(err);
+    return next(
+      new APIError(500, "Đã có lỗi xảy ra khi lấy danh sách khách hàng")
+    );
   }
 };

@@ -14,27 +14,27 @@ const routes = [
     path: "/signin",
     name: "signin",
     component: () => import("@/views/SignIn.vue"),
-    // beforeEnter: (to, from, next) => {
-    //   const authStore = useAuthStore();
-    //   if (authStore.isAdminLoggedIn) {
-    //     next("/home");
-    //   } else {
-    //     next();
-    //   }
-    // },
+    beforeEnter: (to, from, next) => {
+      const authStore = useAuthStore();
+      if (authStore.isAdminLoggedIn) {
+        next("/home");
+      } else {
+        next();
+      }
+    },
   },
   {
     path: "/",
     name: "admin",
     component: () => import("@/views/AdminPage.vue"),
-    // beforeEnter: (to, from, next) => {
-    //   const authStore = useAuthStore();
-    //   if (authStore.isAdminLoggedIn) {
-    //     next();
-    //   } else {
-    //     next({ name: "signin" });
-    //   }
-    // },
+    beforeEnter: (to, from, next) => {
+      const authStore = useAuthStore();
+      if (authStore.isAdminLoggedIn) {
+        next();
+      } else {
+        next({ name: "signin" });
+      }
+    },
     children: [
       {
         path: "/home",

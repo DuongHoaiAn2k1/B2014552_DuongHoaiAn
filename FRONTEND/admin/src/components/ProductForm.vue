@@ -167,12 +167,8 @@
     <footer class="py-4 bg-light mt-auto">
       <div class="container-fluid px-4">
         <div class="d-flex align-items-center justify-content-between small">
-          <div class="text-muted">Bản quyền &copy; Trang web của bạn 2023</div>
-          <div>
-            <a href="#">Chính sách bảo mật</a>
-            &middot;
-            <a href="#">Điều khoản &amp; Điều kiện</a>
-          </div>
+          <div class="text-muted">B2014552 - Dương Hoài Ân</div>
+          <div></div>
         </div>
       </div>
     </footer>

@@ -23,7 +23,6 @@
                   <th>Tên sản phẩm</th>
                   <th>Hình ảnh</th>
                   <th>Giá</th>
-                  <th>Mô tả</th>
                   <th>Thương hiệu</th>
                   <th>Xuất xứ</th>
                   <th>Trạng thái</th>
@@ -44,8 +43,7 @@
                       height="50"
                     />
                   </td>
-                  <td>{{ product.price }}</td>
-                  <td>{{ product.productDes }}</td>
+                  <td>{{ formatPriceVND(product.price) }}</td>
                   <td>{{ product.trademark }}</td>
                   <td>{{ product.origin }}</td>
                   <td>{{ product.soldOut ? "Hết" : "Còn" }}</td>
@@ -78,12 +76,8 @@
     <footer class="py-4 bg-light mt-auto">
       <div class="container-fluid px-4">
         <div class="d-flex align-items-center justify-content-between small">
-          <div class="text-muted">Copyright &copy; Your Website 2023</div>
-          <div>
-            <a href="#">Privacy Policy</a>
-            &middot;
-            <a href="#">Terms &amp; Conditions</a>
-          </div>
+          <div class="text-muted">B2014552 - Dương Hoài Ân</div>
+          <div></div>
         </div>
       </div>
     </footer>
@@ -126,9 +120,17 @@ export default {
       fetchProducts();
     });
 
+    function formatPriceVND(price) {
+      return price.toLocaleString("vi-VN", {
+        style: "currency",
+        currency: "VND",
+      });
+    }
+
     return {
       products,
       confirmDeleteProduct,
+      formatPriceVND,
     };
   },
 };

@@ -10,23 +10,26 @@
 import customerService from "@/services/customer.service";
 import SignInForm from "@/components/SignInForm.vue";
 import { defineComponent, ref } from "vue";
+import { useAuthStore } from "../stores/auth";
+import { useRouter } from "vue-router";
 export default defineComponent({
   components: {
     SignInForm,
   },
   setup() {
-    //   //   const store = useStore();
-    //   //   const router = useRouter();
+    const authStore = useAuthStore();
+    const router = useRouter();
     //   //   const message = ref("");
     const submitSignIn = async (data) => {
       try {
         console.log(data.email);
         const response = await customerService.signIn(data);
         console.log(response);
-        //   //       const token = response.token;
-        //   //       localStorage.setItem("token", token);
-        //   //       store.setIsAuthenticated(true);
-        //   //       router.push({ name: "home" });
+        if (response && response.token) {
+          authStore.login(response.token);
+        }
+        alert("Đăng nhập thành công");
+        router.push({ name: "home" });
       } catch (error) {
         console.log(error);
         //   //       message.value = "Tài phản hoặc mật khẩu. Vui lòng thử lại.";

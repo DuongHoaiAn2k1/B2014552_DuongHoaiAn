@@ -1,5 +1,6 @@
 const express = require("express");
 const product = require("../controllers/product.controller");
+const authentication = require("../controllers/authentication.controller");
 const router = express.Router();
 const multer = require("multer");
 
@@ -19,12 +20,20 @@ router
   .route("/")
   .get(product.findAll)
   // .post(upload.single("productImg"), product.create);
-  .post(upload.array("productImg"), product.create);
+  .post(
+    authentication.authenticateJWT,
+    upload.array("productImg"),
+    product.create
+  );
 
 router
   .route("/:id")
   .get(product.findOne)
-  .patch(upload.array("productImg"), product.update)
-  .delete(product.delete);
+  .patch(
+    authentication.authenticateJWT,
+    upload.array("productImg"),
+    product.update
+  )
+  .delete(authentication.authenticateJWT, product.delete);
 
 module.exports = router;

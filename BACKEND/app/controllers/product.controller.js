@@ -2,6 +2,7 @@ const Product = require("../models/Product.model");
 const APIError = require("../api-error");
 const Joi = require("joi");
 const ApiError = require("../api-error");
+const authenticateJWT = require("../controllers/authentication.controller");
 
 exports.create = async (req, res, next) => {
   try {

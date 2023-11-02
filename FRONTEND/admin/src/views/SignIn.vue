@@ -1,7 +1,6 @@
 <template>
   <div class="page">
     <SignInForm @submit:signin="submitSignIn" />
-    <p></p>
   </div>
 </template>
 
@@ -20,24 +19,19 @@ export default {
     const authStore = useAuthStore();
     // const store = useStore();
     const router = useRouter();
-    // const message = ref("");
     const submitSignIn = async (data) => {
       try {
         const response = await adminService.signIn(data);
         console.log(response);
-        authStore.loginAdmin();
-        console.log("Đăng nhập thành công");
+        if (response && response.token) {
+          authStore.loginAdmin(response.token); // Truyền token vào khi đăng nhập
+        }
+        alert("Đăng nhập thành công");
         router.push({ name: "home" });
         console.log(authStore.isAdminLoggedIn);
-        // Redirect hoặc thực hiện các tác vụ cần thiết cho trang admin
-        // const token = response.token;
-        // localStorage.setItem("token", token);
-        // store.setIsAuthenticated(true);
-        // store.setRole("admin");
-        // router.push({ name: 'admin.dashboard.show' });
       } catch (error) {
         console.log(error);
-        // message.value = "Tài phản hoặc mật khẩu. Vui lòng thử lại.";
+        alert("Tài khoản hoặc mật khẩu không chính xác!!");
       }
     };
     // return { store, message, submitSignIn }

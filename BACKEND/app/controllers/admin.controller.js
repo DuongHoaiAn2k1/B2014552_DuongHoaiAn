@@ -2,10 +2,8 @@ const Admin = require("../models/Admin.model");
 const APIError = require("../api-error");
 const Joi = require("joi");
 const bcrypt = require("bcryptjs");
-var jwt = require("jsonwebtoken");
+const jwt = require("jsonwebtoken");
 const jwtSecret = "mysecretkey";
-var cookieParser = require("cookie-parser");
-const { query } = require("express");
 exports.signUp = async (req, res, next) => {
   try {
     const schema = Joi.object({
@@ -71,11 +69,9 @@ exports.signIn = async (req, res, next) => {
         expiresIn: "24h",
       });
 
-      // Thiết lập cookie trước
-      res.cookie("tokenCookieAdmin", token);
-      res.cookie("adminId", admin._id);
-
-      return res.status(200).json({ message: "Đăng nhập thành công", token });
+      return res
+        .status(200)
+        .json({ message: "Đăng nhập thành công", token: token });
     } else {
       // Nếu mật khẩu không khớp, gửi phản hồi lỗi
       return res.status(401).json({ error: "Mật khẩu không chính xác." });
@@ -86,9 +82,5 @@ exports.signIn = async (req, res, next) => {
 };
 
 exports.signOut = (req, res) => {
-  // Xóa cookie tokenCookie và adminId để đăng xuất
-  res.clearCookie("tokenCookie");
-  res.clearCookie("adminId");
-
   res.status(200).json({ message: "Đăng xuất thành công" });
 };

@@ -53,6 +53,7 @@ export default {
         // console.log("My product needed update: ", formData);
         const response = await productService.update(productId, formData);
         alert("Cập nhật sản phẩm thành công");
+        router.push({ name: "home" });
       } catch (error) {
         console.log(error);
       }

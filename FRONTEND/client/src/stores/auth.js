@@ -4,24 +4,24 @@ import { defineStore } from "pinia";
 export const useAuthStore = defineStore({
   id: "auth",
   state: () => ({
-    isAdminLoggedIn: JSON.parse(
-      localStorage.getItem("isAdminLoggedIn") || "false"
+    isUserLoggedIn: JSON.parse(
+      localStorage.getItem("isUserLoggedIn") || "false"
     ),
     token: localStorage.getItem("token") || null, // Thêm trạng thái token
   }),
   actions: {
-    loginAdmin(token) {
-      // Thực hiện đăng nhập admin và đặt isAdminLoggedIn thành true
-      this.isAdminLoggedIn = true;
+    login(token) {
+      // Thực hiện đăng nhập admin và đặt isUserLoggedIn thành true
+      this.isUserLoggedIn = true;
       this.token = token; // Lưu token vào trạng thái
-      localStorage.setItem("isAdminLoggedIn", true);
+      localStorage.setItem("isUserLoggedIn", true);
       localStorage.setItem("token", token); // Lưu token vào localStorage
     },
-    logoutAdmin() {
-      // Thực hiện đăng xuất admin và đặt isAdminLoggedIn thành false
-      this.isAdminLoggedIn = false;
+    logout() {
+      // Thực hiện đăng xuất admin và đặt isUserLoggedIn thành false
+      this.isUserLoggedIn = false;
       this.token = null; // Xóa token khỏi trạng thái
-      localStorage.setItem("isAdminLoggedIn", false);
+      localStorage.setItem("isUserLoggedIn", false);
       localStorage.removeItem("token"); // Xóa token khỏi localStorage
     },
   },

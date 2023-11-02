@@ -3,8 +3,7 @@
     <!-- Navbar Brand-->
     <router-link :to="{ name: 'home' }" class="router-css">
       <a class="navbar-brand ps-3" href="index.html">ADMIN</a>
-      (+)</router-link
-    >
+    </router-link>
     <!-- Sidebar Toggle-->
     <button
       class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0"
@@ -46,15 +45,40 @@
           class="dropdown-menu dropdown-menu-end"
           aria-labelledby="navbarDropdown"
         >
-          <li><a class="dropdown-item" href="#!">Settings</a></li>
-          <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-          <li><hr class="dropdown-divider" /></li>
-          <li><a class="dropdown-item" href="#!">Logout</a></li>
+          <li>
+            <a class="dropdown-item" href="#!" @click="signOut">Logout</a>
+          </li>
         </ul>
       </li>
     </ul>
   </nav>
 </template>
+
+<script>
+import { useAuthStore } from "@/stores/auth";
+import { useRouter } from "vue-router";
+import adminService from "@/services/admin.service";
+
+export default {
+  setup() {
+    const authStore = useAuthStore();
+    const router = useRouter();
+
+    const signOut = async () => {
+      try {
+        const response = await adminService.signOut();
+        authStore.logoutAdmin();
+        console.log("Đăng xuất thành công");
+        router.push({ name: "signin" });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    return { signOut };
+  },
+};
+</script>
+
 <style>
 .router-css {
   text-decoration: none;
