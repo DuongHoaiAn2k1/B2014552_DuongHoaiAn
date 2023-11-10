@@ -3,43 +3,27 @@
     <div class="row">
       <div class="col-sm-2 d-none d-md-block">
         <div id="sidebar">
-          <h3>CATEGORIES</h3>
-          <div class="checklist categories">
-            <ul>
-              <li>
-                <a href=""><span></span>New Arivals</a>
-              </li>
-              <li>
-                <a href=""><span></span>Accesories</a>
-              </li>
-              <li>
-                <a href=""><span></span>Bags</a>
-              </li>
-              <li>
-                <a href=""><span></span>Dressed</a>
-              </li>
-              <li>
-                <a href=""><span></span>Jackets</a>
-              </li>
-              <li>
-                <a href=""><span></span>jewelry</a>
-              </li>
-              <li>
-                <a href=""><span></span>Shoes</a>
-              </li>
-              <li>
-                <a href=""><span></span>Shirts</a>
-              </li>
-              <li>
-                <a href=""><span></span>Sweaters</a>
-              </li>
-              <li>
-                <a href=""><span></span>T-shirts</a>
-              </li>
-            </ul>
+          <h3>Danh mục sản phẩm</h3>
+          <div
+            class="checklist categories"
+            v-for="(category, index) in categories"
+            :key="category._id"
+          >
+            <div class="form-check mt-2">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                :value="category._id"
+                id="flexCheckDefault"
+                @click="toggleCategorySelection(category._id)"
+              />
+              <label class="form-check-label">
+                {{ category.categoryName }}
+              </label>
+            </div>
           </div>
 
-          <h3>SIZES</h3>
+          <!-- <h3>SIZES</h3>
           <div class="checklist sizes">
             <ul>
               <li>
@@ -64,16 +48,10 @@
                 <a href=""><span></span>XXL</a>
               </li>
             </ul>
-          </div>
-
-          <h3>PRICE RANGE</h3>
-          <img
-            src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/245657/price-range.png"
-            alt=""
-          />
+          </div> -->
         </div>
       </div>
-      <div class="col-12 col-sm-10">
+      <div class="col-12 col-sm-10" id="scroll-container-product">
         <div class="container">
           <div class="row mt-n5 ms-2">
             <div
@@ -84,17 +62,17 @@
                 animation-delay: 0.2s;
                 animation-name: fadeInUp;
               "
-              v-for="(product, index) in products"
+              v-for="(product, index) in filteredProducts"
               :key="product._id"
             >
-              <router-link
-                :to="{
-                  name: 'product-detail',
-                  params: { id: product._id },
-                }"
-                class="router-css-2"
-              >
-                <div class="blog-grid">
+              <div class="blog-grid">
+                <router-link
+                  :to="{
+                    name: 'product-detail',
+                    params: { id: product._id },
+                  }"
+                  class="router-css-2"
+                >
                   <div class="blog-grid-img position-relative">
                     <img
                       alt="img"
@@ -103,46 +81,43 @@
                       "
                     />
                   </div>
-                  <div class="blog-grid-text p-4">
-                    <h3 class="h5 mb-3">
-                      <p style="font-size: 18px; font-weight: 600">
-                        {{ product.productName }}
-                      </p>
-                    </h3>
-                    <div class="row">
-                      <p
-                        class="col-8"
-                        style="
-                          font-weight: 600;
-                          color: red;
-                          font-size: 24px;
-                          display: inline-block;
-                        "
-                      >
-                        {{ formatPriceVND(product.price) }}
-                      </p>
-                      <a
-                        class="col-4"
-                        style="
-                          font-size: 24px;
-                          text-align: center;
-                          margin-top: 0px;
-                        "
-                        data-mdb-toggle="tooltip"
-                        title="Thêm vào giỏ hàng"
-                        ><router-link
-                          :to="{
-                            name: 'home',
-                          }"
-                          class="router-css-2"
-                        >
-                          <i class="fa-solid fa-cart-plus"></i
-                        ></router-link>
-                      </a>
-                    </div>
+                </router-link>
+
+                <div class="blog-grid-text p-4">
+                  <h3 class="h5 mb-3">
+                    <p style="font-size: 18px; font-weight: 600">
+                      {{ product.productName }}
+                    </p>
+                  </h3>
+                  <div class="row">
+                    <p
+                      class="col-8"
+                      style="
+                        font-weight: 600;
+                        color: red;
+                        font-size: 24px;
+                        display: inline-block;
+                      "
+                    >
+                      {{ formatPriceVND(product.price) }}
+                    </p>
+                    <a
+                      class="col-4"
+                      style="
+                        font-size: 24px;
+                        text-align: center;
+                        margin-top: 0px;
+                      "
+                      data-mdb-toggle="tooltip"
+                      title="Thêm vào giỏ hàng"
+                      @click="addToCart(product)"
+                      href="#"
+                    >
+                      <i class="fa-solid fa-cart-plus"></i>
+                    </a>
                   </div>
                 </div>
-              </router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -151,6 +126,9 @@
   </div>
 </template>
 <script>
+import { useCartStore } from "@/stores/cart";
+import { onMounted, ref, computed } from "vue";
+import CategoryService from "@/services/category.service.js";
 export default {
   props: {
     products: {
@@ -162,6 +140,46 @@ export default {
       required: true,
     },
   },
+  setup(props) {
+    const categories = ref([]);
+    const selectedCategories = ref([]);
+    const cart = useCartStore();
+    const fetchCategories = async () => {
+      categories.value = await CategoryService.findAll();
+    };
+    const addToCart = (product) => {
+      cart.addProduct({ ...product, quantity: 1 }); // Thêm sản phẩm với số lượng là 1
+    };
+    const toggleCategorySelection = (categoryId) => {
+      if (selectedCategories.value.includes(categoryId)) {
+        // Nếu categoryId đã tồn tại trong selectedCategories, loại bỏ nó
+        selectedCategories.value = selectedCategories.value.filter(
+          (id) => id !== categoryId
+        );
+      } else {
+        // Ngược lại, thêm categoryId vào selectedCategories
+        selectedCategories.value.push(categoryId);
+      }
+      console.log("Hi", selectedCategories);
+    };
+
+    const filteredProducts = computed(() => {
+      if (selectedCategories.value.length === 0) {
+        return props.products;
+      } else {
+        return props.products.filter((product) =>
+          selectedCategories.value.includes(product.categoryId)
+        );
+      }
+    });
+    onMounted(fetchCategories);
+    return {
+      categories,
+      filteredProducts,
+      toggleCategorySelection,
+      addToCart,
+    };
+  },
 };
 </script>
 <style>
@@ -170,7 +188,11 @@ export default {
 #wrapper {
   margin-bottom: 85px;
 }
-
+#scroll-container-product {
+  padding: 0px;
+  height: 800px;
+  overflow: auto;
+}
 body {
   margin-top: 20px;
 }

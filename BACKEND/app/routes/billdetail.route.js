@@ -10,4 +10,8 @@ router
   .patch(billDetail.update)
   .delete(billDetail.delete);
 
+router
+  .route("/getdetail/:id")
+  .get(billDetail.findByBillId)
+  .delete(billDetail.deleteByBillId);
 module.exports = router;

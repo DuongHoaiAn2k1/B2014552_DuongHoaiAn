@@ -80,3 +80,41 @@ exports.findOne = async (req, res, next) => {
     );
   }
 };
+
+exports.findByBillId = async (req, res, next) => {
+  try {
+    const billId = req.params.id;
+    const billDetails = await BillDetail.find({ billId: billId });
+
+    if (!billDetails || billDetails.length === 0) {
+      return res.status(404).json({
+        message: "Không tìm thấy chi tiết hóa đơn",
+      });
+    }
+    res.json(billDetails);
+  } catch (error) {
+    return next(new APIError(500, `Đã có lỗi khi lấy chi tiết hóa đơn`));
+  }
+};
+
+exports.deleteByBillId = async (req, res, next) => {
+  try {
+    const billId = req.params.id;
+    // Tìm và xóa tất cả các billDetails có billId tương ứng
+    const result = await BillDetail.deleteMany({ billId: billId });
+
+    // Kiểm tra kết quả của việc xóa
+    if (result.deletedCount === 0) {
+      return res.status(404).json({
+        message: "Không tìm thấy chi tiết hóa đơn để xóa",
+      });
+    }
+
+    res.status(200).json({
+      message: "Xóa chi tiết hóa đơn thành công",
+      deletedCount: result.deletedCount,
+    });
+  } catch (error) {
+    return next(new APIError(500, `Đã có lỗi khi xóa chi tiết hóa đơn`));
+  }
+};

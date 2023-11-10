@@ -88,41 +88,16 @@
       </div>
 
       <hr />
-
-      <div class="row mb-4">
+      <div class="row mb-2">
         <!-- col.// -->
-        <div class="col-md-4 col-6 mb-3">
-          <label class="mb-2 d-block">Quantity</label>
-          <div class="input-group mb-3" style="width: 170px">
-            <button
-              class="btn btn-white border border-secondary px-3"
-              type="button"
-              id="button-addon1"
-              data-mdb-ripple-color="dark"
-            >
-              <i class="fas fa-minus"></i>
-            </button>
-            <input
-              type="text"
-              class="form-control text-center border border-secondary"
-              placeholder="14"
-              aria-label="Example text with button addon"
-              aria-describedby="button-addon1"
-            />
-            <button
-              class="btn btn-white border border-secondary px-3"
-              type="button"
-              id="button-addon2"
-              data-mdb-ripple-color="dark"
-            >
-              <i class="fas fa-plus"></i>
-            </button>
-          </div>
-        </div>
         <div class="col-md-4 col-6">
           <div class="row mt-4" style="margin-top: 32px !important">
-            <a href="#" class="btn btn-primary shadow-0">
-              <i class="me-1 fa fa-shopping-basket"></i> Add to cart
+            <a
+              href="#"
+              class="btn btn-dark shadow-0"
+              @click="addToCart(product)"
+            >
+              <i class="me-1 fa fa-shopping-basket"></i> Thêm vào giỏ hàng
             </a>
           </div>
         </div>
@@ -131,6 +106,7 @@
   </main>
 </template>
 <script>
+import { useCartStore } from "@/stores/cart";
 export default {
   props: {
     product: {
@@ -141,6 +117,17 @@ export default {
       type: Function,
       required: true,
     },
+  },
+  setup(props) {
+    const cart = useCartStore();
+
+    const addToCart = (product) => {
+      cart.addProduct({ ...product, quantity: 1 }); // Thêm sản phẩm với số lượng là 1
+    };
+
+    return {
+      addToCart,
+    };
   },
 };
 </script>

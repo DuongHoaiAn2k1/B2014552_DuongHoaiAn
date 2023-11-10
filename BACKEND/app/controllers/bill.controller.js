@@ -4,8 +4,9 @@ const APIError = require("../api-error");
 exports.create = async (req, res, next) => {
   try {
     const bill = new Bill(req.body);
-    await bill.save();
-    res.json("Hóa đơn đã được tạo thành công");
+    const savedBill = await bill.save();
+    res.json(savedBill);
+    console.log(req.body);
   } catch (error) {
     return next(new APIError(500, "Đã có lỗi xảy ra khi tạo hóa đơn"));
   }
@@ -50,7 +51,7 @@ exports.delete = async (req, res, next) => {
       });
     }
 
-    res.json("Hóa đơn đã được xóa thành công");
+    res.json(billId);
   } catch (error) {
     return next(new APIError(500, "Đã có lỗi xảy ra khi xóa hóa đơn"));
   }
@@ -71,6 +72,29 @@ exports.findOne = async (req, res, next) => {
   } catch (error) {
     return next(
       new APIError(500, "Đã có lỗi xảy ra khi lấy thông tin hóa đơn")
+    );
+  }
+};
+
+exports.findByCustomerId = async (req, res, next) => {
+  try {
+    const customerId = req.params.id; // Hoặc req.query.customerId nếu bạn muốn sử dụng query string
+    const bills = await Bill.find({ customerId: customerId });
+
+    if (!bills || bills.length === 0) {
+      return res.status(404).json({
+        message: "Không tìm thấy hóa đơn nào cho khách hàng này",
+      });
+    }
+
+    res.json(bills);
+    // res.json(customerId);
+  } catch (error) {
+    return next(
+      new APIError(
+        500,
+        `Đã có lỗi xảy ra khi lấy danh sách hóa đơn cho khách hàng với ID: ${req.params.customerId}`
+      )
     );
   }
 };

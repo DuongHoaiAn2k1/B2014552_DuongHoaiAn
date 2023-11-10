@@ -22,7 +22,7 @@
             </a>
           </router-link>
 
-          <router-link :to="{ name: 'home' }" class="router-css">
+          <router-link :to="{ name: 'list-bill' }" class="router-css">
             <a class="nav-link">
               <div class="sb-nav-link-icon">
                 <i class="fa-solid fa-file-invoice"></i>
@@ -31,7 +31,7 @@
             </a>
           </router-link>
 
-          <router-link :to="{ name: 'home' }" class="router-css">
+          <router-link :to="{ name: 'list-customer' }" class="router-css">
             <a class="nav-link">
               <div class="sb-nav-link-icon">
                 <i class="fa-solid fa-user"></i>

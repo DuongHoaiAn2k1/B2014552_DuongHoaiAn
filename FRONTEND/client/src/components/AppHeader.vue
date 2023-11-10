@@ -33,18 +33,17 @@
           <!-- Icon -->
           <a class="text-reset me-3" href="#">
             <router-link
-              v-show="isLoggedIn"
               :to="{
                 name: 'cart',
               }"
-              class="router-css router-li"
+              class="router-css router-li router-cart"
             >
               <i class="fas fa-shopping-cart"></i>
             </router-link>
 
-            <span class="badge rounded-pill badge-notification bg-danger"
-              >1</span
-            >
+            <span class="badge rounded-pill badge-notification bg-danger">{{
+              totalQuantity
+            }}</span>
           </a>
 
           <div class="dropdown">
@@ -136,15 +135,18 @@
 import { ref, onMounted, watchEffect, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth.js";
+import { useCartStore } from "@/stores/cart.js";
 export default {
   setup() {
     const authStore = useAuthStore();
+    const cart = useCartStore();
     const isLoggedIn = computed(() => authStore.isUserLoggedIn);
     const userId = computed(() => authStore.userId);
-
+    const totalQuantity = computed(() => cart.totalQuantity);
     return {
       isLoggedIn,
       userId,
+      totalQuantity,
     };
   },
 };
@@ -156,6 +158,10 @@ body {
 }
 .router-css {
   text-decoration: none;
+}
+
+.router-cart {
+  color: black;
 }
 
 .header {
