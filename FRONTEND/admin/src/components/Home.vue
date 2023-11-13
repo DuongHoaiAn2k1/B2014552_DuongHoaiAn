@@ -15,7 +15,7 @@
           <div class="card-header">
             <i class="fas fa-table me-1"></i>
           </div>
-          <div class="card-body">
+          <div class="card-body" id="scroll-container">
             <table class="table">
               <thead class="table-light">
                 <tr>
@@ -58,7 +58,6 @@
                     ></router-link>
                     &ensp;|&ensp;
                     <a
-                      href=""
                       style="color: black"
                       @click="
                         confirmDeleteProduct(product._id, product.productName)
@@ -113,6 +112,7 @@ export default {
         } catch (error) {
           console.log(error);
         }
+      } else {
       }
     };
 
@@ -137,6 +137,35 @@ export default {
 </script>
 
 <style>
+#scroll-container {
+  padding: 0px;
+  height: 800px;
+  overflow: auto;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead {
+  background-color: #000;
+  /* Màu nền của phần head */
+  color: #fff;
+  position: sticky;
+  top: 0;
+}
+
+th {
+  text-align: left;
+  padding: 8px 10px;
+  /* Các thuộc tính CSS khác cho phần đầu bảng */
+}
+
+tbody {
+  height: 200px;
+  /* Đặt chiều cao cho phần body để tạo thanh cuộn */
+  overflow: auto;
+}
 .router-css {
   text-decoration: none;
   color: #fff;

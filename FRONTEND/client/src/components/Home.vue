@@ -45,15 +45,6 @@
         />
         <div class="carousel-caption d-none d-md-block"></div>
       </div>
-      <div class="carousel-item">
-        <img
-          style="height: 380px"
-          src="https://www.depotmaletools.com/wp-content/uploads/2023/03/DEPOT_SITO_IMMAGINI-ISTITUZIONALI_HEADER_1600X900.jpg"
-          class="d-block w-100"
-          alt="..."
-        />
-        <div class="carousel-caption d-none d-md-block"></div>
-      </div>
     </div>
     <button
       class="carousel-control-prev"
@@ -93,6 +84,74 @@
             :key="product._id"
           >
             <div v-if="index < 4" class="blog-grid">
+              <router-link
+                :to="{
+                  name: 'product-detail',
+                  params: { id: product._id },
+                }"
+                class="router-css-2"
+              >
+                <div class="blog-grid-img position-relative">
+                  <img
+                    alt="img"
+                    :src="
+                      'http://localhost:3000/uploads/' + product.productImg[0]
+                    "
+                  />
+                </div>
+              </router-link>
+
+              <div class="blog-grid-text p-4">
+                <h3 class="h5 mb-3">
+                  <p style="font-size: 18px; font-weight: 600">
+                    {{ product.productName }}
+                  </p>
+                </h3>
+                <div class="row">
+                  <p
+                    class="col-8"
+                    style="
+                      font-weight: 600;
+                      color: red;
+                      font-size: 24px;
+                      display: inline-block;
+                    "
+                  >
+                    {{ formatPriceVND(product.price) }}
+                  </p>
+                  <a
+                    class="col-4"
+                    style="font-size: 24px; text-align: center; margin-top: 0px"
+                    data-mdb-toggle="tooltip"
+                    title="Thêm vào giỏ hàng"
+                    @click="addToCart(product)"
+                    href="#"
+                  >
+                    <i class="fa-solid fa-cart-plus"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-sm-10 contain-product">
+      <h1 class="text-center mt-2" style="font-weight: 600">Sản phẩm mới</h1>
+      <div class="container">
+        <div class="row mt-n5">
+          <div
+            class="col-md-6 col-lg-3 mt-1 wow fadeInUp"
+            data-wow-delay=".2s"
+            style="
+              visibility: visible;
+              animation-delay: 0.2s;
+              animation-name: fadeInUp;
+            "
+            v-for="(product, index) in products"
+            :key="product._id"
+          >
+            <div v-if="index > 19 && index < 24" class="blog-grid">
               <router-link
                 :to="{
                   name: 'product-detail',

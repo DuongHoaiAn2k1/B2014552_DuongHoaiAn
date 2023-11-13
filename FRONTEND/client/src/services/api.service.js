@@ -39,7 +39,7 @@ export default (baseURL) => {
         // Token hết hạn hoặc không hợp lệ
         const authStore = useAuthStore();
         authStore.logout(); // Gọi hành động đăng xuất từ store
-        router.push({ name: "signin" });
+        // router.push({ name: "signin" });
       }
       return Promise.reject(error);
     }

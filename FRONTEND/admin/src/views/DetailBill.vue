@@ -9,6 +9,17 @@
             {{ getStatusText(bill.status) }}</span
           >
         </ol>
+        <h5>
+          <span style="font-weight: 600">Tên khách hàng:</span>
+          {{ customer.name }}
+        </h5>
+        <h5>
+          <span style="font-weight: 600">Địa chỉ:</span> {{ customer.address }}
+        </h5>
+        <h5>
+          <span style="font-weight: 600">Số điện thoại:</span>
+          {{ customer.phone }}
+        </h5>
         <form @submit="updateStatus" action="" class="mb-2">
           <select v-model="bill.status">
             <option v-for="s in statuses" :value="s.value">
@@ -136,10 +147,11 @@ import { useRoute } from "vue-router";
 import billService from "@/services/bill.service.js";
 import billDetailService from "@/services/billdetail.service.js";
 import productService from "@/services/product.service.js";
-
+import customerService from "@/services/customer.service.js";
 export default {
   setup() {
     const bill = ref({});
+    const customer = ref({});
     const detailBill = ref({});
     const route = useRoute();
     const products = reactive({});
@@ -155,7 +167,7 @@ export default {
         detailBill.value = await billDetailService.getDetailByBillId(
           billId.value
         );
-        console.log("My bill:", bill);
+        // console.log("My bill:", bill.value.customerId);
         console.log("My detail:", detailBill);
         for (const item of detailBill.value) {
           if (!products[item.productId]) {
@@ -164,6 +176,9 @@ export default {
             products[item.productId] = productInfo; // Lưu thông tin sản phẩm vào đối tượng reactive
           }
         }
+
+        customer.value = await customerService.get(bill.value.customerId);
+        console.log(customer.value.name);
       } catch (error) {
         console.log(error);
       }
@@ -207,6 +222,7 @@ export default {
     return {
       statuses,
       bill,
+      customer,
       products,
       detailBill,
       formatPriceVND,

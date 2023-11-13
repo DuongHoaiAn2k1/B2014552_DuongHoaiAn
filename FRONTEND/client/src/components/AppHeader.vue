@@ -80,6 +80,15 @@
                   <a class="dropdown-item" href="#">Đăng nhập</a>
                 </li>
               </router-link>
+              <router-link
+                v-show="!isLoggedIn"
+                :to="{ name: 'signup' }"
+                class="router-css router-li"
+              >
+                <li>
+                  <a class="dropdown-item" href="#">Đăng ký</a>
+                </li>
+              </router-link>
               <!-- <li><a class="dropdown-item" href="#">Another action</a></li>
               <li><a class="dropdown-item" href="#">Something else here</a></li> -->
             </ul>

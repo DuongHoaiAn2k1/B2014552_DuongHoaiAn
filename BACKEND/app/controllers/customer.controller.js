@@ -82,7 +82,9 @@ exports.signIn = async (req, res, next) => {
     const isMatch = await bcrypt.compare(password, user.password);
 
     if (!isMatch) {
-      return res.status(401).json({ error: "Mật khẩu không chính xác." });
+      return res
+        .status(401)
+        .json({ error: "Email hoặc mật khẩu không chính xác" });
     }
 
     // Nếu đăng nhập thành công, tạo mã thông báo (token)

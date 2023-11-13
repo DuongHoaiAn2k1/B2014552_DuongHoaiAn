@@ -43,7 +43,6 @@
                     &ensp;|&ensp;
                     <a
                       style="color: black"
-                      href=""
                       @click="
                         confirmDeleteCategory(
                           category._id,
