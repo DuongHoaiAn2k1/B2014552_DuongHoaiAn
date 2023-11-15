@@ -190,7 +190,7 @@ export default {
 }
 #scroll-container-product {
   padding: 0px;
-  height: 800px;
+  height: 1200px;
   overflow: auto;
 }
 body {

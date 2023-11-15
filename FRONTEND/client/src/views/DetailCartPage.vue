@@ -79,7 +79,7 @@
                     </div>
                   </td>
                   <td>{{ item.quantity }}</td>
-                  <td class="text-end">$79.99</td>
+                  <td class="text-end">{{ formatPriceVND(item.price) }}</td>
                 </tr>
               </tbody>
               <tfoot>

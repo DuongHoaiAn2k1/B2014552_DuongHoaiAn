@@ -128,7 +128,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(bill, index) in bills" :key="bill._id">
+                <tr v-for="(bill, index) in reversedBills" :key="bill._id">
                   <th>{{ index + 1 }}</th>
                   <td>{{ bill._id }}</td>
                   <td>{{ formatPriceVND(bill.totalCost) }}</td>
@@ -179,6 +179,9 @@ export default {
     // Sử dụng toRefs để giữ reactivity của props khi destructuring
     const { customerData } = toRefs(props);
     const bills = ref([]);
+    const reversedBills = computed(() => {
+      return [...bills.value].reverse();
+    });
     const authStore = useAuthStore();
     const userId = computed(() => authStore.userId);
     const logout = () => {
@@ -233,6 +236,7 @@ export default {
     };
     return {
       customerData,
+      reversedBills,
       logout,
       formatPriceVND,
       datetime,
