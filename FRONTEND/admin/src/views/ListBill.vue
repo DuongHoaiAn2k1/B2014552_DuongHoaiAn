@@ -27,7 +27,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(bill, index) in bills" :key="bill._id">
+                <tr v-for="(bill, index) in reverseBills" :key="bill._id">
                   <th>{{ index + 1 }}</th>
                   <td>{{ bill._id }}</td>
                   <td>{{ formatPriceVND(bill.totalCost) }}</td>
@@ -69,6 +69,9 @@ export default {
     const billCount = computed(() => {
       return bills.value.length;
     });
+    const reverseBills = computed(() => {
+      return [...bills.value].reverse();
+    });
     const fetchBill = async () => {
       try {
         const response = await billService.findAll();
@@ -108,6 +111,7 @@ export default {
     return {
       bills,
       billCount,
+      reverseBills,
       formatPriceVND,
       datetime,
       getStatusText,

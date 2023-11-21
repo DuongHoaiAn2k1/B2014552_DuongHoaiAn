@@ -138,7 +138,9 @@ import { ref, reactive } from "vue";
 
 const schema = Yup.object().shape({
   name: Yup.string().required("Họ và tên không được để trống"),
-  email: Yup.string().email().required("Email không được để trống"),
+  email: Yup.string()
+    .email("Email phải đúng định dạng")
+    .required("Email không được để trống"),
   password: Yup.string()
     .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
     .matches(/[a-z]/, "Mật khẩu phải có ý nhất một chữ cái thường")

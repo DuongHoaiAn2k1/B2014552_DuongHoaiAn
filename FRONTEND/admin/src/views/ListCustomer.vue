@@ -19,7 +19,7 @@
                   <div class="card-body"></div>
                   <div class="table-responsive">
                     <table class="table no-wrap user-table mb-0">
-                      <thead>
+                      <thead style="background-color: #fff !important">
                         <tr>
                           <th
                             scope="col"
