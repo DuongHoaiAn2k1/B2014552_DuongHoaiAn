@@ -145,6 +145,7 @@
                   </td>
                   <td>
                     <i
+                      v-show="bill.status === 1"
                       @click="cancel(bill._id)"
                       class="text-danger fa-solid fa-xmark"
                     ></i>
