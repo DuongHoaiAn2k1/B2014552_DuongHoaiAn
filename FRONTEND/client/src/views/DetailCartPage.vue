@@ -16,7 +16,8 @@
             <div class="mb-3 d-flex justify-content-between">
               <div>
                 <span class="me-3">{{ datetime(bill.billTime) }}</span>
-                <span class="me-3">#{{ bill._id }}</span>
+                <span class="me-3">|Địa chỉ: {{ customerData.address }}</span>
+                <span class="me-3">|SĐT: {{ customerData.phone }}</span>
               </div>
               <div class="d-flex">
                 <button
@@ -179,15 +180,27 @@ import { useRoute } from "vue-router";
 import billService from "@/services/bill.service.js";
 import billDetailService from "@/services/billdetail.service.js";
 import productService from "@/services/product.service.js";
-
+import { useAuthStore } from "../stores/auth";
+import customerService from "@/services/customer.service.js";
 export default {
   setup() {
     const bill = ref({});
     const detailBill = ref({});
     const route = useRoute();
     const products = reactive({});
+    const customerData = ref({
+      name: "",
+      email: "",
+      phone: "",
+      address: "",
+    });
+    const authStore = useAuthStore();
+    const userId = computed(() => authStore.userId);
     onMounted(async () => {
       try {
+        const response = await customerService.get(userId.value);
+        const { name, email, phone, address } = response;
+        customerData.value = { name, email, phone, address };
         const billId = computed(() => route.params.id);
         bill.value = await billService.get(billId.value);
         detailBill.value = await billDetailService.getDetailByBillId(
@@ -233,6 +246,7 @@ export default {
       bill,
       products,
       detailBill,
+      customerData,
       formatPriceVND,
       datetime,
       getStatusText,

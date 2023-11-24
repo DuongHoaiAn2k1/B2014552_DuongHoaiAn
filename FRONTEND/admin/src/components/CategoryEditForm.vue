@@ -3,7 +3,7 @@
   <div id="layoutSidenav_content">
     <main>
       <div class="container-fluid px-4">
-        <h2 style="font-weight: 600" class="mt-4">Thêm sản phẩm</h2>
+        <h2 style="font-weight: 600" class="mt-4">Cập nhật danh mục</h2>
         <div class="card mb-4"></div>
         <div class="container-fluid">
           <form @submit.prevent="submitUpdateCategory">

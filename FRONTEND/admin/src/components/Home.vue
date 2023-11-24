@@ -87,11 +87,13 @@
 import { useAuthStore } from "@/stores/auth.js";
 import productService from "@/services/product.service.js";
 import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 const authStore = useAuthStore();
 
 export default {
   setup() {
     const products = ref([]);
+    const router = useRouter();
     const fetchProducts = async () => {
       try {
         const response = await productService.findAll();
@@ -109,6 +111,9 @@ export default {
       if (shouldDelete) {
         try {
           const response = await productService.delete(productId);
+          alert("Xóa sản phẩm thành công!");
+          const responseP = await productService.findAll();
+          products.value = responseP;
         } catch (error) {
           console.log(error);
         }

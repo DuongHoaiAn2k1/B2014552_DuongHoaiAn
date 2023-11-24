@@ -2,7 +2,7 @@
   <div id="layoutSidenav_content">
     <main>
       <div class="container-fluid px-4">
-        <h1 class="mt-4" style="font-weight: 600">Danh mục sản phẩm</h1>
+        <h1 class="mt-4" style="font-weight: 600">Chi tiết đơn hàng</h1>
         <ol class="breadcrumb mb-2">
           <h4 style="font-weight: 600">Trạng thái:</h4>
           <span style="font-size: 20px; color: blue">

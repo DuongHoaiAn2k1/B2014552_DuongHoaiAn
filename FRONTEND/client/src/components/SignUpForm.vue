@@ -98,7 +98,7 @@
                           v-model="dataSignUp.address"
                           placeholder="Vui lòng nhập địa chỉ"
                         />
-                        <span class="text-danger">{{ phoneErrors }}</span>
+                        <span class="text-danger">{{ addressErrors }}</span>
                       </div>
                     </div>
 

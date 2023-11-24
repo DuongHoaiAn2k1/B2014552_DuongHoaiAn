@@ -86,6 +86,7 @@ export default {
         try {
           const response = await CategoryService.delete(categoryId);
           alert("Xóa danh mục thành công");
+          fetchCategories();
         } catch (error) {
           console.log(error);
         }

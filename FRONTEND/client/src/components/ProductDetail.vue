@@ -123,6 +123,7 @@ export default {
 
     const addToCart = (product) => {
       cart.addProduct({ ...product, quantity: 1 }); // Thêm sản phẩm với số lượng là 1
+      alert("Thêm sản phẩm vào giỏ hàng thành công!");
     };
 
     return {
